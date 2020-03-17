@@ -45,17 +45,23 @@ inputCitiesTo.addEventListener('input', () => {
 });
 
 dropdownCitiesFrom.addEventListener('click', () => {
+
     const target = event.target;
+
     if (target.tagName.toLowerCase() === 'li') {
         inputCitiesFrom.value = target.textContent;
         dropdownCitiesFrom.textContent = '';
     };
+
 });
 
 dropdownCitiesTo.addEventListener('click', () => {
+
     const target = event.target;
+
     if (target.tagName.toLowerCase() === 'li') {
         inputCitiesTo.value = target.textContent;
         dropdownCitiesTo.textContent = '';
     };
+    
 });
