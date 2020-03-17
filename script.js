@@ -5,7 +5,8 @@ const inputCitiesTo = document.querySelector('.input__cities-to');
 const dropdownCitiesTo = document.querySelector('.dropdown__cities-to');
 const inputDateDepart = document.querySelector('.input__date-depart');
 
-const cities = ['Москва', 'Санкт-Петербург', 'Минск', 'Караганда', 'Одесса', 'Калининград', 'Киев', 'Нурсултан', 'Симферополь'];
+const cities = ['Москва', 'Санкт-Петербург', 'Минск', 'Караганда', 
+    'Одесса', 'Калининград', 'Киев', 'Нурсултан', 'Симферополь'];
 
 const showCity = (input, list) => {
 
@@ -36,6 +37,18 @@ const showCity = (input, list) => {
 
 };
 
+const selectCity = (event, input, list) => {
+
+    const target = event.target;
+
+    if (target.tagName.toLowerCase() === 'li') {
+        input.value = target.textContent;
+        list.textContent = '';
+    };
+
+
+};
+
 inputCitiesFrom.addEventListener('input', () => {
     showCity(inputCitiesFrom, dropdownCitiesFrom);
 });
@@ -44,24 +57,11 @@ inputCitiesTo.addEventListener('input', () => {
    showCity(inputCitiesTo, dropdownCitiesTo);
 });
 
+
 dropdownCitiesFrom.addEventListener('click', () => {
-
-    const target = event.target;
-
-    if (target.tagName.toLowerCase() === 'li') {
-        inputCitiesFrom.value = target.textContent;
-        dropdownCitiesFrom.textContent = '';
-    };
-
+    selectCity(event, inputCitiesFrom, dropdownCitiesFrom);
 });
 
 dropdownCitiesTo.addEventListener('click', () => {
-
-    const target = event.target;
-
-    if (target.tagName.toLowerCase() === 'li') {
-        inputCitiesTo.value = target.textContent;
-        dropdownCitiesTo.textContent = '';
-    };
-    
+    selectCity(event, inputCitiesTo, dropdownCitiesTo);
 });
