@@ -127,17 +127,21 @@ formSearch.addEventListener('submit', (event) => {
     const cityFrom = cities.find((item) => inputCitiesFrom.value === item.name);
     const cityTo = cities.find((item) => inputCitiesTo.value === item.name);
 
-    const formData = {
-        from: cityFrom.code,
-        to: cityTo.code,
-        when: inputDateDepart.value,
-    };
+    if (cityFrom) {
+        
+        const formData = {
+            from: cityFrom.code,
+            to: cityTo.code,
+            when: inputDateDepart.value,
+        };
+        
+        const requestData = `?depart_date=${formData.when}&origin=${formData.from}&destination=${formData.to}&one_way=true&token=${tokenAPI}`;
     
-    const requestData = `?depart_date=${formData.when}&origin=${formData.from}&destination=${formData.to}&one_way=true&token=${tokenAPI}`;
+        getData((calendar + requestData), (response) => {
+            renderCheap(response, formData.when);
+        });
 
-    getData((calendar + requestData), (response) => {
-        renderCheap(response, formData.when);
-    });
+    };
     
 });
 //вызовы функций
