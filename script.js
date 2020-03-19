@@ -1,5 +1,5 @@
-//
-const formSearch          = document.querySelector('div');
+//элементы
+const formSearch          = document.querySelector('.form-search');
 const inputCitiesFrom     = document.querySelector('.input__cities-from');
 const dropdownCitiesFrom  = document.querySelector('.dropdown__cities-from');
 const inputCitiesTo       = document.querySelector('.input__cities-to');
@@ -13,7 +13,6 @@ const proxy = 'https://cors-anywhere.herokuapp.com/';
 const tokenAPI = '3aa50df42a60329088821a43e84ff7cf';
 const calendar = 'http://min-prices.aviasales.ru/calendar_preload';
 let cities = [];
-const fullURL = calendar + '?origin=SVX&destination=KGD&depart_date=2020-05-25&one_way=true&token=' + tokenAPI;
 
  //функции
 const getData = (url, callback) => {
@@ -40,8 +39,7 @@ const getData = (url, callback) => {
 
 const showCity = (input, list) => {
 
-    dropdownCitiesFrom.textContent = '';
-    dropdownCitiesTo.textContent = '';
+    list.textContent = '';
 
     if (input.value === '') return;
 
@@ -76,6 +74,24 @@ const selectCity = (event, input, list) => {
 
 };
 
+const renderCheapDay = (tickets) => {
+    console.log(tickets);
+};
+
+const renderCheapYear = (tickets) => {
+    console.log(tickets);
+};
+
+const renderCheap = (data, when) => {
+    const cheapTickets = JSON.parse(data).best_prices;
+    const cheapTicketsDay = cheapTickets.filter((item) => {
+        return item.depart_date === when;
+    });
+
+    renderCheapDay(cheapTicketsDay);
+    renderCheapYear(cheapTickets);
+};
+
 //обработчики событий
 //обрабатываем ввод
 inputCitiesFrom.addEventListener('input', () => {
@@ -87,19 +103,35 @@ inputCitiesTo.addEventListener('input', () => {
 });
 
 //обрабатываем клики на списках
-dropdownCitiesFrom.addEventListener('click', () => {
+dropdownCitiesFrom.addEventListener('click', (event) => {
     selectCity(event, inputCitiesFrom, dropdownCitiesFrom);
 });
 
-dropdownCitiesTo.addEventListener('click', () => {
+dropdownCitiesTo.addEventListener('click', (event) => {
     selectCity(event, inputCitiesTo, dropdownCitiesTo);
 });
 
+formSearch.addEventListener('submit', (event) => {
+
+    event.preventDefault();
+
+    const cityFrom = cities.find((item) => inputCitiesFrom.value === item.name);
+    const cityTo = cities.find((item) => inputCitiesTo.value === item.name);
+
+    const formData = {
+        from: cityFrom.code,
+        to: cityTo.code,
+        when: inputDateDepart.value,
+    };
+    
+    const requestData = `?depart_date=${formData.when}&origin=${formData.from}&destination=${formData.to}&one_way=true&token=${tokenAPI}`;
+
+    getData((calendar + requestData), (response) => {
+        renderCheap(response, formData.when);
+    });
+    
+});
 //вызовы функций
 getData(citiesAPI, (data) => {
     cities = JSON.parse(data).filter((item => item.name));
-});
-
-getData(fullURL, (data) => {
-    console.log(JSON.parse(data));
 });
