@@ -48,8 +48,16 @@ const showCity = (input, list) => {
         const cityLowerCase = item.name.toLowerCase();
         const valueLowerCase = input.value.toLowerCase();
 
-        return cityLowerCase.includes(valueLowerCase);
+        return cityLowerCase.startsWith(valueLowerCase);
 
+    });
+
+    filterCities.sort((a,b) => {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
+            return -1;
+        } else if ( a.name.toLowerCase() > b.name.toLowerCase()) {
+            return 1;
+        };
     });
 
     filterCities.forEach((item) => {
@@ -79,6 +87,7 @@ const renderCheapDay = (tickets) => {
 };
 
 const renderCheapYear = (tickets) => {
+    tickets.sort((a,b) => a.value - b.value);
     console.log(tickets);
 };
 
